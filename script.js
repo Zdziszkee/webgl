@@ -16,7 +16,7 @@ function setup() {
 
     const fragmentShaderSource = `
         void main() {
-            gl_FragColor = vec4(1, 0, 0, 1);  // czerwony kolor
+            gl_FragColor = vec4(0, 1, 0, 1);  // zielony kolor
         }
     `;
 
@@ -50,18 +50,20 @@ function setup() {
 
     gl.useProgram(program);
 
-    const vertices = new Float32Array([
-        -0.5, -0.5,
-        0.5, -0.5,
-        -0.5,  0.5,
-        -0.5,  0.5,
-        0.5, -0.5,
-        0.5,  0.5
+    const hexagonVertices = new Float32Array([
+        0.0,  0.0,  // środek
+        0.5,  0.0,  // prawy
+        0.25, 0.433, // prawy górny
+        -0.25, 0.433, // lewy górny
+        -0.5,  0.0,  // lewy
+        -0.25, -0.433, // lewy dolny
+        0.25, -0.433, // prawy dolny
+        0.5,  0.0  // prawy (ponownie zamknięcie)
     ]);
 
     const buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, hexagonVertices, gl.STATIC_DRAW);
 
     const positionLocation = gl.getAttribLocation(program, 'a_position');
     gl.enableVertexAttribArray(positionLocation);
@@ -70,5 +72,5 @@ function setup() {
     gl.clearColor(0, 0, 0, 1);  // czarne tło
     gl.clear(gl.COLOR_BUFFER_BIT);
 
-    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    gl.drawArrays(gl.TRIANGLE_FAN, 0, 8);
 }
